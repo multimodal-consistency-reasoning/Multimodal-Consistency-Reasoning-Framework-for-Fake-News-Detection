@@ -12,7 +12,7 @@ A multimodal fake news detection framework that goes beyond binary classificatio
 - **Learned MLP fusion layer** combining CLIP and metadata model outputs (replacing a fixed-alpha blend)
 - **Consistency Score** — a novel score combining text-image alignment, OCR similarity, and metadata confidence to flag inconsistent / likely-fake samples
 - Cosine learning-rate scheduling with early stopping, gradient clipping, and stronger image augmentation
-- Full evaluation suite: classification reports, confusion matrices, threshold analysis, and an ablation study
+- Full evaluation suite: classification reports, confusion matrices, threshold analysis, and per-component (branch-wise) performance comparison
 - Publication-ready figures for paper writeups
 
 ## 📊 Pipeline Overview
@@ -31,7 +31,7 @@ This project uses the **Fakeddit** multimodal dataset (Reddit posts with text, i
 
 ## 📁 Repository Structure
 
-\```
+```
 .
 ├── notebooks/
 │   └── Fake_News_Paper_Code.ipynb   # Full end-to-end pipeline (data → training → fusion → consistency reasoning)
@@ -39,15 +39,15 @@ This project uses the **Fakeddit** multimodal dataset (Reddit posts with text, i
 ├── checkpoints/                      # Saved model weights — populated after running
 ├── requirements.txt
 └── README.md
-\```
+```
 
 ## ⚙️ Setup
 
-\```bash
+```bash
 git clone https://github.com/<your-username>/<your-repo-name>.git
 cd <your-repo-name>
 pip install -r requirements.txt
-\```
+```
 
 The notebook was developed for a Google Colab GPU runtime. It works locally as well, provided you have a CUDA-capable GPU (recommended) or are prepared to run on CPU (slower).
 
@@ -64,13 +64,14 @@ The notebook produces:
 - Per-model accuracy and macro-F1 comparison (RoBERTa+ResNet50, CLIP, XGBoost, Learned Fusion)
 - Confusion matrices for each model
 - Consistency score distributions and threshold-vs-accuracy analysis
-- An ablation table isolating the contribution of OCR and metadata signals
+- A component-wise performance breakdown isolating the individual contribution of each evidence branch (semantic, OCR, metadata) prior to fusion
 
 ## 📝 Notes
 
 - Random seeds are fixed (`SEED = 42`) throughout for reproducibility.
 - Class imbalance is handled via balanced class weighting in the loss function.
 - This repository accompanies a research paper on multimodal consistency reasoning for fake news detection; figure-generation cells are included for publication-quality plots.
+- All reported results are obtained on a held-out validation split used during training; no independently held-out test partition is currently reserved (see the paper's Limitations section).
 
 ## 📜 License
 
